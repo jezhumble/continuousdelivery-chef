@@ -12,3 +12,8 @@ Bootstrapping:
     apt-get install opscode-keyring # permanent upgradeable keyring
     echo "chef chef/chef_server_url string none" | debconf-set-selections && apt-get install chef -y
     
+Running:
+
+* Check out repository to /var/chef-solo
+* Change working directory to /var/chef-solo
+* Run chef-solo -c solo.rb -j node.json
