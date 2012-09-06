@@ -4,17 +4,16 @@
 # Based on http://wordpress.stackexchange.com/questions/2490/what-is-the-best-caching-option-for-wordpress-multi-site-on-non-shared-hosting
 # Copyright 2012 Jez Humble
 # Licensed under the BSD 2-line license
-
 package "nginx"
-
-service "nginx" do
-  supports "default" => [ :restart, :reload, :status ];
-  action [ :enable, :start ]
-end
 
 service "ssh" do
   service_name "ssh"
-  supports "default" => [ :restart, :reload, :status ];
+  supports "default" => [ :restart, :reload, :status ]
+  action [ :enable, :start ]
+end
+
+service "nginx" do
+  supports "default" => [ :restart, :reload, :status ]
   action [ :enable, :start ]
 end
 
@@ -26,3 +25,4 @@ template "/etc/ssh/sshd_config" do
 
   notifies :restart, "service[ssh]"
 end
+
