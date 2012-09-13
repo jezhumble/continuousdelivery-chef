@@ -4,15 +4,19 @@
 # Based on http://wordpress.stackexchange.com/questions/2490/what-is-the-best-caching-option-for-wordpress-multi-site-on-non-shared-hosting
 # Copyright 2012 Jez Humble
 # Licensed under the BSD 2-line license
-package "nginx"
+
+package "mysql-server-5.5"
+
+service "mysql-server-5.5" do
+  restart_command "restart mysql"
+  stop_command "stop mysql"
+  start_command "start mysql"
+  supports "default" => [ :restart, :reload, :status ]
+  action [ :nothing ]
+end
 
 service "ssh" do
   service_name "ssh"
-  supports "default" => [ :restart, :reload, :status ]
-  action [ :enable, :start ]
-end
-
-service "nginx" do
   supports "default" => [ :restart, :reload, :status ]
   action [ :enable, :start ]
 end
@@ -26,3 +30,21 @@ template "/etc/ssh/sshd_config" do
   notifies :restart, "service[ssh]"
 end
 
+apache2_module "rewrite"
+
+apache2_site "continuousdelivery" do
+  template "apache2/apache2_site.erb"
+  server_name "continuousdelivery.com"
+  server_port "8080"
+  server_aliases ["www.continuousdelivery.com", "guide.continuousdelivery.com"]
+  docroot "/var/www/continuousdelivery"
+end
+
+nginx_site "continuousdelivery" do
+  template "nginx/nginx_wp_site.erb"
+  server_name "continuousdelivery.com"
+  server_ip "*"
+  server_port "80"
+  server_aliases ["www.continuousdelivery.com", "guide.continuousdelivery.com"]
+  upstream_server_port "8080"
+end  

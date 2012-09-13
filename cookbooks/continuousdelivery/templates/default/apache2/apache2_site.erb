@@ -1,0 +1,19 @@
+<VirtualHost *:<%= @params[:server_port] %>>
+        ServerName <%= @params[:server_name] %>
+        ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+        DocumentRoot <%= @params[:docroot] %>
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride FileInfo
+        </Directory>
+
+        CustomLog <%= node[:apache2][:log_dir] %>/<%= @params[:name] %>-access.log combined
+        ErrorLog <%= node[:apache2][:log_dir] %>/<%= @params[:name] %>-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        ServerSignature On
+</VirtualHost>

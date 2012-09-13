@@ -16,6 +16,8 @@ template "/etc/apache2/ports.conf" do
 end
 
 package "libapache2-mod-rpaf"
+package "libapache2-mod-php5"
+package "php5-mysql"
 
 execute "deactivate default site" do
   command "a2dissite default"
