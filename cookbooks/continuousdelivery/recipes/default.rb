@@ -2,8 +2,9 @@
 # It assumes you're running Ubuntu 12.04 LTS "Precise"
 # You should create a user with sudo rights before running this, as it turns off the ability to ssh in as root
 # Based on http://wordpress.stackexchange.com/questions/2490/what-is-the-best-caching-option-for-wordpress-multi-site-on-non-shared-hosting
+# Also lots of stuff taken from https://github.com/opscode-cookbooks/
 # Copyright 2012 Jez Humble
-# Licensed under the BSD 2-line license
+# Licensed under the Apache 2 license
 
 package "mysql-server-5.5"
 
@@ -31,6 +32,7 @@ template "/etc/ssh/sshd_config" do
 end
 
 apache2_module "rewrite"
+apache2_module "ssl"
 
 apache2_site "continuousdelivery" do
   template "apache2/apache2_site.erb"
@@ -48,3 +50,13 @@ nginx_site "continuousdelivery" do
   server_aliases ["www.continuousdelivery.com", "guide.continuousdelivery.com"]
   upstream_server_port "8080"
 end  
+
+apache2_site "subversion" do
+  template "apache2/apache2_ssl_site.erb"
+  svn_root "/var/subversion"
+  svn_path "/svn"
+  docroot "/var/www/subversion"
+  auth_file "/etc/apache2/dav_svn.auth"
+  ssl_cert_file "/etc/apache2/ssl/wiki.jezhumble.net.cert"
+  ssl_cert_key_file "/etc/apache2/ssl/wiki.jezhumble.net.key"
+end
