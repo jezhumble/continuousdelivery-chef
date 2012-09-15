@@ -51,6 +51,23 @@ nginx_site "continuousdelivery" do
   upstream_server_port "8080"
 end  
 
+apache2_site "jezhumble" do
+  template "apache2/apache2_site.erb"
+  server_name "jezhumble.net"
+  server_port "8080"
+  server_aliases ["www.jezhumble.net", "blog.jezhumble.net"]
+  docroot "/var/www/jezhumble"
+end
+
+nginx_site "jezhumble" do
+  template "nginx/nginx_wp_site.erb"
+  server_name "jezhumble.net"
+  server_ip "*"
+  server_port "80"
+  server_aliases ["www.jezhumble.net", "blog.jezhumble.net"]
+  upstream_server_port "8080"
+end  
+
 apache2_site "subversion" do
   template "apache2/apache2_ssl_site.erb"
   svn_root "/var/subversion"
