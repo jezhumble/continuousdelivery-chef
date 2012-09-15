@@ -1,4 +1,5 @@
 <VirtualHost *:443>
+        ServerName <%= @params[:server_name] %>
         DocumentRoot <%= @params[:docroot] %>
 
         SSLEngine on
@@ -20,7 +21,7 @@
         </Directory>
 
          SSLProtocol -all +TLSv1 +SSLv3
-         SSLCipherSuite HIGH:MEDIUM:!aNULL:+SHA1:+HIGH:+MEDIUM
+         SSLCipherSuite HIGH:MEDIUM:!aNULL:+SHA1:+MD5:+HIGH:+MEDIUM
 
          SSLCertificateFile <%= @params[:ssl_cert_file] %>
          SSLCertificateKeyFile <%= @params[:ssl_cert_key_file] %>

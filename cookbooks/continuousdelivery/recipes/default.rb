@@ -69,11 +69,12 @@ nginx_site "jezhumble" do
 end  
 
 apache2_site "subversion" do
+  server_name "jezhumble.net"
   template "apache2/apache2_ssl_site.erb"
   svn_root "/var/subversion"
   svn_path "/svn"
   docroot "/var/www/subversion"
   auth_file "/etc/apache2/dav_svn.auth"
-  ssl_cert_file "/etc/apache2/ssl/wiki.jezhumble.net.cert"
-  ssl_cert_key_file "/etc/apache2/ssl/wiki.jezhumble.net.key"
+  ssl_cert_file "/etc/apache2/ssl/jezhumble.net.cert"
+  ssl_cert_key_file "/etc/apache2/ssl/jezhumble.net.key"
 end
